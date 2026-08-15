@@ -33,3 +33,8 @@ data/sessions/*
 .env
 .env.*
 !.env.example
+
+# Local SQLite test databases
+data/*_test.db
+data/*_test.db-wal
+data/*_test.db-shm
