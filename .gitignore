@@ -1,0 +1,35 @@
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Local databases
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Runtime data
+logs/*
+data/sessions/*
+
+# Keep directory structure
+!logs/.gitkeep
+!data/sessions/.gitkeep
+
+# OS/editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Environment/secrets
+.env
+.env.*
+!.env.example
