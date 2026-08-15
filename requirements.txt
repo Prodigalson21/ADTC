@@ -1,0 +1,8 @@
+flask==3.0.3
+pydantic==2.7.4
+psutil==5.9.8
+Pillow==10.3.0
+onnxruntime==1.18.0
+pyudev==0.24.1
+duckdb==1.0.0
+numpy<2
