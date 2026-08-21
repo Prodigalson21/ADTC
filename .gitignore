@@ -38,3 +38,4 @@ data/sessions/*
 data/*_test.db
 data/*_test.db-wal
 data/*_test.db-shm
+models/*.gguf
