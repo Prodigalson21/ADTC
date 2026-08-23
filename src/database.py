@@ -74,7 +74,12 @@ class Database:
                 timestamp TEXT NOT NULL,
                 FOREIGN KEY (sale_id) REFERENCES sales(id)
             );
-
+            CREATE TABLE IF NOT EXISTS restock_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                product_id INTEGER NOT NULL,
+                timestamp TEXT NOT NULL,
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            );
             CREATE INDEX IF NOT EXISTS idx_sales_product ON sales(product_id);
             CREATE INDEX IF NOT EXISTS idx_sales_timestamp ON sales(timestamp);
             CREATE INDEX IF NOT EXISTS idx_refunds_sale ON refunds(sale_id);
@@ -258,7 +263,47 @@ class Database:
                 }
         return None
 
+    def apply_discount(self, name: str, percent: float) -> Dict[str, Any]:
+        """Permanently reduce a product's unit price by percent%.
+        Raises ValueError if the product doesn't exist or percent is
+        outside [0, 100]."""
+        if not (0 <= percent <= 100):
+            raise ValueError(f"percent must be between 0 and 100, got {percent}")
 
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT id, unit_price_cents FROM products WHERE name = ?", (name,)
+            ).fetchone()
+            if not row:
+                raise ValueError(f"Product '{name}' not found")
+
+            old_price = row["unit_price_cents"]
+            new_price = round(old_price * (1 - percent / 100))
+
+            self._conn.execute(
+                "UPDATE products SET unit_price_cents = ? WHERE id = ?",
+                (new_price, row["id"])
+            )
+            self._conn.commit()
+            return {"product": name, "old_price_cents": old_price, "new_price_cents": new_price}
+
+    def log_restock_request(self, name: str) -> int:
+        """Flag a product as needing restock. No quantity is recorded
+        or changed -- this is a notification, not a stock mutation."""
+        timestamp = datetime.now().isoformat()
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT id FROM products WHERE name = ?", (name,)
+            ).fetchone()
+            if not row:
+                raise ValueError(f"Product '{name}' not found")
+
+            cursor = self._conn.execute(
+                "INSERT INTO restock_requests (product_id, timestamp) VALUES (?, ?)",
+                (row["id"], timestamp)
+            )
+            self._conn.commit()
+            return cursor.lastrowid
 if __name__ == "__main__":
     # Clean test database -- same pattern as swahili_agreement.py's test
     # harness. Without this, re-running this file fails on the second
