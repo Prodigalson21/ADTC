@@ -17,3 +17,10 @@ REPORT.md, replacing both the original estimate and the earlier
 - Concurrency test: 0 errors, 30/30 sales succeeded under simultaneous scale+barcode+agent load
 - Thermal: no sensor available in WSL2 (expected) -- thermal-adaptive logic implemented and
   unit-tested (Day 3), but genuinely unvalidated under sustained load until native hardware access
+
+## Day 5 validation results
+- Lookup/fast-path coverage: 55/55 = 100% on expanded phrasing set (up from Day 1's 7-sentence check)
+- Scenario runner: 15/15 = 100%, fast-path bypass rate 80% (12/15 scenarios never touched the LLM)
+- Concurrency test: 0 errors, 30/30 sales succeeded under simultaneous scale+barcode+agent load
+- Thermal: no sensor available in WSL2 (expected) -- thermal-adaptive logic implemented and
+  unit-tested (Day 3), but genuinely unvalidated under sustained load until native hardware access
