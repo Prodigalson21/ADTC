@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADTC POS Agent</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.4rem; }
+  section { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+  input, button { font-size: 1rem; padding: 0.4rem; }
+  input[type=text] { width: 100%; box-sizing: border-box; margin-bottom: 0.5rem; }
+  button { cursor: pointer; }
+  #query-result, #scale-result, #barcode-result { margin-top: 0.5rem; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; }
+  .success { border-left: 4px solid green; }
+  .error { border-left: 4px solid crimson; }
+</style>
+</head>
+<body>
+  <h1>ADTC 2026 POS Agent</h1>
+
+  <section>
+    <h2>Ask (English or Swahili)</h2>
+    <input type="text" id="query-input" placeholder="uza 2.5 kg ya sukari">
+    <button onclick="sendQuery()">Send</button>
+    <div id="query-result"></div>
+  </section>
+
+  <section>
+    <h2>Scale</h2>
+    <button onclick="readScale()">Read Scale</button>
+    <div id="scale-result"></div>
+  </section>
+
+  <section>
+    <h2>Barcode</h2>
+    <button onclick="checkBarcode()">Check Latest Scan</button>
+    <div id="barcode-result"></div>
+  </section>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
