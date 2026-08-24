@@ -1,0 +1,16 @@
+{"template": "sales_by_period", "params": {"period": "day"}, "expect": "pass"}
+{"template": "sales_by_period", "params": {"period": "month", "start_date": "2026-01-01", "end_date": "2026-08-24"}, "expect": "pass"}
+{"template": "sales_by_period", "params": {"period": "invalid_period"}, "expect": "fail"}
+{"template": "sales_by_period", "params": {}, "expect": "fail"}
+{"template": "top_n_products", "params": {"n": 5, "metric": "revenue"}, "expect": "pass"}
+{"template": "top_n_products", "params": {"n": 100, "metric": "quantity"}, "expect": "fail"}
+{"template": "top_n_products", "params": {"n": -1, "metric": "revenue"}, "expect": "fail"}
+{"template": "margin_by_category", "params": {"period": "week"}, "expect": "pass"}
+{"template": "margin_by_category", "params": {"period": "all"}, "expect": "pass"}
+{"template": "margin_by_category", "params": {}, "expect": "pass"}
+{"template": "stock_turnover", "params": {"days": 30}, "expect": "pass"}
+{"template": "stock_turnover", "params": {"days": 500}, "expect": "fail"}
+{"template": "stock_turnover", "params": {}, "expect": "pass"}
+{"template": "nonexistent_template", "params": {}, "expect": "fail"}
+{"template": "sales_by_period", "params": {"period": "day", "start_date": "not-a-date"}, "expect": "fail"}
+{"template": "top_n_products", "params": {"n": "five", "metric": "revenue"}, "expect": "fail"}

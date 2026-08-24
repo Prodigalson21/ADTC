@@ -1,0 +1,34 @@
+{
+  "name": "analytics_engine",
+  "description": "Run parameterized analytical queries against shop.db. Returns Chart.js-ready JSON. No free-text SQL.",
+  "ram_budget_mb": 150,
+  "templates": {
+    "sales_by_period": {
+      "description": "Total sales revenue grouped by time period",
+      "params": {
+        "period": {"type": "enum", "values": ["hour", "day", "week", "month"], "required": true},
+        "start_date": {"type": "date", "required": false},
+        "end_date": {"type": "date", "required": false}
+      }
+    },
+    "top_n_products": {
+      "description": "Top N products by revenue or quantity sold",
+      "params": {
+        "n": {"type": "int", "min": 1, "max": 50, "required": true},
+        "metric": {"type": "enum", "values": ["revenue", "quantity"], "required": true}
+      }
+    },
+    "margin_by_category": {
+      "description": "Profit margin by product category",
+      "params": {
+        "period": {"type": "enum", "values": ["day", "week", "month", "all"], "required": false}
+      }
+    },
+    "stock_turnover": {
+      "description": "Stock turnover ratio per product over a time window",
+      "params": {
+        "days": {"type": "int", "min": 1, "max": 365, "required": false}
+      }
+    }
+  }
+}

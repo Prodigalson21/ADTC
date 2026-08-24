@@ -18,6 +18,7 @@ from typing import Optional, Dict, Any, Callable
 
 import src.business_logic as business_logic
 
+from skills.analytics_engine.handler import run_analytics, AnalyticsError
 
 def _dispatch_record_sale(db, params: Dict[str, str]) -> Dict[str, Any]:
     return business_logic.record_sale(
@@ -47,13 +48,23 @@ def _dispatch_check_inventory(db, params: Dict[str, str]) -> Dict[str, Any]:
 def _dispatch_restock_alert(db, params: Dict[str, str]) -> Dict[str, Any]:
     return business_logic.restock_alert(db, product_name=params["product"])
 
-
+def handle_analytics(params: dict, db_path: str = "data/shop.db") -> dict:
+    """Dispatch to analytics_engine skill."""
+    template = params.get("template")
+    analytics_params = params.get("params", {})
+    try:
+        result = run_analytics(db_path, template, analytics_params)
+        return {"success": True, "data": result}
+    except AnalyticsError as e:
+        return {"success": False, "error": str(e)}
 ACTION_DISPATCH: Dict[str, Callable] = {
     "record_sale": _dispatch_record_sale,
     "resolve_refund_by_product": _dispatch_resolve_refund_by_product,
     "apply_discount": _dispatch_apply_discount,
     "check_inventory": _dispatch_check_inventory,
     "restock_alert": _dispatch_restock_alert,
+    "run_analytics": handle_analytics,
+
 }
 
 
