@@ -11,7 +11,9 @@ everywhere.
 """
 
 from typing import Optional, Dict, Any
+import re
 
+_VALID_PRODUCT_NAME = re.compile(r"^\w+$")
 VALID_UNITS = {"kg", "g", "l", "ml", "count"}
 
 
@@ -94,6 +96,13 @@ def check_inventory(db, product_name: str) -> Dict[str, Any]:
 def register_product(db, name: str, unit: str, unit_price_cents: int,
                       stock_quantity: float = 0.0, category: str = "") -> Dict[str, Any]:
     """Register a new product, first-scan style -- no assumed catalog."""
+    if not _VALID_PRODUCT_NAME.match(name):
+        return _err(
+            f"Product name '{name}' contains characters the fast-path regex "
+            f"can't match (only letters/digits/underscore allowed, no spaces, "
+            f"apostrophes, or hyphens) -- it would be silently unreachable via "
+            f"natural-language input. Choose a plain single-word name instead."
+        )
     if unit not in VALID_UNITS:
         return _err(f"Unsupported unit: '{unit}'. Valid units: {sorted(VALID_UNITS)}")
     if unit_price_cents < 0:
