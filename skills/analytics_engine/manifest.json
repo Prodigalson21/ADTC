@@ -1,7 +1,7 @@
 {
   "name": "analytics_engine",
   "description": "Run parameterized analytical queries against shop.db. Returns Chart.js-ready JSON. No free-text SQL.",
-  "ram_budget_mb": 150,
+  "ram_budget_mb": 76,
   "templates": {
     "sales_by_period": {
       "description": "Total sales revenue grouped by time period",
